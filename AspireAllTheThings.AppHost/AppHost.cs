@@ -29,22 +29,22 @@ builder.AddAzureServiceBusDemo(); // Service Bus with emulator
 builder.AddAzureCosmosDbDemo();   // Cosmos DB with emulator
 builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 
-// ---- PART 2: Multi-Language Apps (2-MultiLanguage.cs) ----
-builder.AddAspNetApiDemo();       // ASP.NET Core Web API
-builder.AddPythonApiDemo();       // Python Flask API
-builder.AddNodeApiDemo();         // Node.js Express API
+// // ---- PART 2: Multi-Language Apps (2-MultiLanguage.cs) ----
+// builder.AddAspNetApiDemo();       // ASP.NET Core Web API
+// builder.AddPythonApiDemo();       // Python Flask API
+// builder.AddNodeApiDemo();         // Node.js Express API
 
-// ---- PART 3: Custom Integrations ----
-builder.AddItToolsDemo();         // Simple Docker container (3-ItTools.cs)
-builder.AddMailPitDemo();         // Community Toolkit (4-MailPit.cs)
+// // ---- PART 3: Custom Integrations ----
+// builder.AddItToolsDemo();         // Simple Docker container (3-ItTools.cs)
+// builder.AddMailPitDemo();         // Community Toolkit (4-MailPit.cs)
 
-// ---- PART 5: Advanced Integration Patterns (5-AdvancedIntegrations.cs) ----
-// Discord Notifier - Posts to Discord when resources change state
-// Set "Discord:WebhookUrl" in user secrets to enable:
-//   dotnet user-secrets set "Discord:WebhookUrl" "https://discord.com/api/webhooks/..."
-builder.AddDiscordNotifierDemo();
+// // ---- PART 5: Advanced Integration Patterns (5-AdvancedIntegrations.cs) ----
+// // Discord Notifier - Posts to Discord when resources change state
+// // Set "Discord:WebhookUrl" in user secrets to enable:
+// //   dotnet user-secrets set "Discord:WebhookUrl" "https://discord.com/api/webhooks/..."
+// builder.AddDiscordNotifierDemo();
 
-// ---- BONUS: Fun Demos (6-Fun.cs) ----
-builder.AddMinecraftDemo();       // Minecraft server 
+// // ---- BONUS: Fun Demos (6-Fun.cs) ----
+// builder.AddMinecraftDemo();       // Minecraft server 
 
 builder.Build().Run();

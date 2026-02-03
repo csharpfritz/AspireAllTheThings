@@ -8,13 +8,15 @@
 
 ## Session Overview
 
-This demo project is organized into **three parts**:
+This demo project is organized into **five parts**:
 
 | Part | Topic | Files |
 |------|-------|-------|
-| **Part 1** | Official Aspire Integrations | `3-OfficialIntegrations.cs` |
-| **Part 2** | Multi-Language App Support | `4-MultiLanguage.cs` |
-| **Part 3** | Custom Integration Creation | `1-ItTools.cs`, `2-MailPit.cs`, `5-Fun.cs` |
+| **Part 1** | Official Aspire Integrations | `1-OfficialIntegrations.cs` |
+| **Part 2** | Multi-Language App Support | `2-MultiLanguage.cs` |
+| **Part 3** | Custom Integration Creation | `3-ItTools.cs`, `4-MailPit.cs` |
+| **Part 5** | Advanced Integration Patterns | `5-AdvancedIntegrations.cs` |
+| **Part 6** | Fun Demos | `6-Fun.cs` |
 
 ## Project Structure
 
@@ -22,11 +24,12 @@ This demo project is organized into **three parts**:
 AspireAllTheThings/
 ├── AspireAllTheThings.AppHost/
 │   ├── AppHost.cs                    ← Main entry point (uncomment demos here)
-│   ├── 1-ItTools.cs                  ← Part 3: Simple Docker container
-│   ├── 2-MailPit.cs                  ← Part 3: Community Toolkit
-│   ├── 3-OfficialIntegrations.cs     ← Part 1: Redis, Postgres, SQL, Azure
-│   ├── 4-MultiLanguage.cs            ← Part 2: .NET, Python, Node.js
-│   └── 5-Fun.cs                      ← Part 3: Minecraft & Dockercraft
+│   ├── 1-OfficialIntegrations.cs     ← Part 1: Redis, Postgres, SQL, Azure
+│   ├── 2-MultiLanguage.cs            ← Part 2: .NET, Python, Node.js
+│   ├── 3-ItTools.cs                  ← Part 3: Simple Docker container
+│   ├── 4-MailPit.cs                  ← Part 3: Community Toolkit
+│   ├── 5-AdvancedIntegrations.cs     ← Part 5: Discord Notifier (eventing)
+│   └── 6-Fun.cs                      ← Part 6: Minecraft
 ├── AspireAllTheThings.WebApi/        ← Sample ASP.NET Core API
 ├── python-api/                       ← Sample Python Flask API
 └── node-api/                         ← Sample Node.js Express API
@@ -155,6 +158,10 @@ var mailpit = builder.AddMailPit("mailpit");
 
 **Learn More:** [Aspire Community Toolkit](https://github.com/CommunityToolkit/Aspire)
 
+# Part 6: Fun Demos
+
+Because Aspire isn't just for web apps and databases!
+
 ## Demo: Minecraft Server 🎮
 
 **Image:** `itzg/minecraft-server`
@@ -173,26 +180,57 @@ var minecraft = builder.AddContainer("minecraft", "itzg/minecraft-server")
 
 **Connect:** `localhost:25565`
 
-## Demo: Dockercraft - Visualize Aspire Containers in Minecraft! 🎮
+---
 
-**Image:** `gaetan/dockercraft`
+# Part 5: Advanced Integration Patterns
 
-Walk through your infrastructure in Minecraft! Each container appears as a building.
+Learn how to build CUSTOM Aspire integrations with proper eventing patterns.
 
-```csharp
-var dockercraft = builder.AddContainer("dockercraft", "gaetan/dockercraft")
-    .WithEndpoint(targetPort: 25565, port: 25566, name: "dockercraft", scheme: "tcp")
-    .WithBindMount("/var/run/docker.sock", "/var/run/docker.sock")
-    .WithArgs("Forest", "63", "0", "Trees")
-    .ExcludeFromManifest();
+> ⚠️ **Important Framing:** This is DEV-TIME tooling! The AppHost (and its eventing) doesn't run in production. In production, you'd use Azure Monitor, Prometheus, etc. But the patterns you learn here ARE production-relevant for database seeding, migrations, and integration testing.
+
+## Demo: Discord Notifier 🔔
+
+A custom integration that posts to Discord whenever resources change state.
+
+### Setup
+
+1. Create a Discord webhook: **Server Settings → Integrations → Webhooks → New Webhook**
+2. Store the URL in user secrets:
+
+```bash
+cd AspireAllTheThings.AppHost
+dotnet user-secrets set "Discord:WebhookUrl" "https://discord.com/api/webhooks/YOUR_ID/YOUR_TOKEN"
 ```
 
-**Features:**
-- Pull levers to start/stop containers
-- Push buttons to remove containers
-- Use chat for Docker commands: `/docker ps`
+### Usage
 
-**Connect:** `localhost:25566`
+```csharp
+builder.AddDiscordNotifier("discord-alerts", webhookUrl)
+    .NotifyOnStartup()      // 🚀 "Aspire is starting up!"
+    .NotifyOnShutdown()     // 👋 "Aspire is shutting down!"
+    .WatchAllResources();   // ✅ "cache is ready!" for each resource
+```
+
+### Key Concepts Demonstrated
+
+| Concept | What It Shows |
+|---------|---------------|
+| **Custom Resource Type** | `DiscordNotifierResource` - non-container resource |
+| **BeforeStartEvent** | Global event before any resources start |
+| **ResourceReadyEvent** | Per-resource event when healthy |
+| **ResourceStoppedEvent** | Per-resource event when stopped |
+| **ExcludeFromManifest()** | Dev-only resource, won't deploy |
+| **Builder Pattern** | `Add*` and `With*` extension methods |
+
+### Live Demo Flow
+
+| Step | What Happens | Discord Shows |
+|------|--------------|---------------|
+| 1 | Run `aspire run` | 🚀 "Aspire is starting up! Launching X resources..." |
+| 2 | Resources start | ✅ "**cache** is ready!" (for each) |
+| 3 | Stop Redis in dashboard | 🛑 "**cache** stopped!" |
+| 4 | Restart Redis | ✅ "**cache** is ready!" |
+| 5 | Ctrl+C | 👋 "Aspire is shutting down!" |
 
 ---
 
@@ -227,6 +265,12 @@ builder.AddAspNetApiDemo();
 // ---- PART 3: Custom Integrations ----
 builder.AddItToolsDemo();
 builder.AddMailPitDemo();
+
+// ---- PART 5: Advanced Integration Patterns ----
+builder.AddDiscordNotifierDemo();  // Requires Discord:WebhookUrl in user secrets
+
+// ---- PART 6: Fun Demos ----
+builder.AddMinecraftDemo();
 ```
 
 ---
