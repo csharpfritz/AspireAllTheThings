@@ -1,0 +1,6 @@
+@AspireAllTheThings.WebApi_HostAddress = http://localhost:5092
+
+GET {{AspireAllTheThings.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
