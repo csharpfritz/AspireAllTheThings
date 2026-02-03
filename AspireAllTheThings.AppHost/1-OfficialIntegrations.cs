@@ -79,7 +79,8 @@ public static class OfficialIntegrationsDemo
             .RunAsEmulator();  // Use emulator for local dev
         
         serviceBus.AddServiceBusQueue("orders");
-        serviceBus.AddServiceBusTopic("events", "audit");  // Topic with subscription
+        serviceBus.AddServiceBusTopic("events")
+            .AddServiceBusSubscription("audit");  // Topic with subscription
 
         return builder;
     }

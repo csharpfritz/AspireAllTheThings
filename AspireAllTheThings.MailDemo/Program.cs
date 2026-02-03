@@ -26,10 +26,16 @@ builder.Services.AddSingleton(sp =>
         };
     }
     
-    // Parse the connection string (format: smtp://host:port or just host:port)
-    var uri = mailpitConnection.StartsWith("smtp://") 
-        ? new Uri(mailpitConnection) 
-        : new Uri($"smtp://{mailpitConnection}");
+    // Parse the connection string (format: Endpoint=smtp://host:port)
+    var endpointValue = mailpitConnection;
+    if (mailpitConnection.StartsWith("Endpoint=", StringComparison.OrdinalIgnoreCase))
+    {
+        endpointValue = mailpitConnection.Substring("Endpoint=".Length);
+    }
+    
+    var uri = endpointValue.StartsWith("smtp://", StringComparison.OrdinalIgnoreCase) 
+        ? new Uri(endpointValue) 
+        : new Uri($"smtp://{endpointValue}");
     
     return new SmtpClient(uri.Host, uri.Port > 0 ? uri.Port : 1025)
     {

@@ -22,24 +22,29 @@ var builder = DistributedApplication.CreateBuilder(args);
 // ============================================
 
 // ---- PART 1: Official Integrations (1-OfficialIntegrations.cs) ----
-// builder.AddRedisDemo();           // Redis with Redis Insight
-// builder.AddPostgresDemo();        // PostgreSQL with pgAdmin
-// builder.AddSqlServerDemo();       // SQL Server
-// builder.AddAzureServiceBusDemo(); // Service Bus with emulator
-// builder.AddAzureCosmosDbDemo();   // Cosmos DB with emulator
-// builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
+builder.AddRedisDemo();           // Redis with Redis Insight
+builder.AddPostgresDemo();        // PostgreSQL with pgAdmin
+builder.AddSqlServerDemo();       // SQL Server
+builder.AddAzureServiceBusDemo(); // Service Bus with emulator
+builder.AddAzureCosmosDbDemo();   // Cosmos DB with emulator
+builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 
 // ---- PART 2: Multi-Language Apps (2-MultiLanguage.cs) ----
-// builder.AddAspNetApiDemo();       // ASP.NET Core Web API
-// builder.AddPythonApiDemo();       // Python Flask API
-// builder.AddNodeApiDemo();         // Node.js Express API
+builder.AddAspNetApiDemo();       // ASP.NET Core Web API
+builder.AddPythonApiDemo();       // Python Flask API
+builder.AddNodeApiDemo();         // Node.js Express API
 
 // ---- PART 3: Custom Integrations ----
-// builder.AddItToolsDemo();         // Simple Docker container (3-ItTools.cs)
-// builder.AddMailPitDemo();         // Community Toolkit (4-MailPit.cs)
+builder.AddItToolsDemo();         // Simple Docker container (3-ItTools.cs)
+builder.AddMailPitDemo();         // Community Toolkit (4-MailPit.cs)
 
-// ---- BONUS: Fun Demos (5-Fun.cs) ----
-// builder.AddMinecraftDemo();       // Minecraft server 
-// builder.AddDockercraftDemo();     // Dockercraft visualization
+// ---- PART 5: Advanced Integration Patterns (5-AdvancedIntegrations.cs) ----
+// Discord Notifier - Posts to Discord when resources change state
+// Set "Discord:WebhookUrl" in user secrets to enable:
+//   dotnet user-secrets set "Discord:WebhookUrl" "https://discord.com/api/webhooks/..."
+builder.AddDiscordNotifierDemo();
+
+// ---- BONUS: Fun Demos (6-Fun.cs) ----
+builder.AddMinecraftDemo();       // Minecraft server 
 
 builder.Build().Run();
