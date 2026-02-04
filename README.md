@@ -292,7 +292,8 @@ builder.AddMinecraftDemo();
 - [Aspire Community Toolkit](https://github.com/CommunityToolkit/Aspire)
 - [IT-Tools](https://github.com/CorentinTh/it-tools)
 - [MailPit](https://github.com/axllent/mailpit)
-- [Dockercraft](https://github.com/docker/dockercraft)
+- [Minecraft Server Docker Image](https://github.com/itzg/docker-minecraft-server)
+- [Discord Webhooks Documentation](https://discord.com/developers/docs/resources/webhook)
 
 ---
 
