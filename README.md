@@ -14,7 +14,8 @@ This demo project is organized into **five parts**:
 |------|-------|-------|
 | **Part 1** | Official Aspire Integrations | `1-OfficialIntegrations.cs` |
 | **Part 2** | Multi-Language App Support | `2-MultiLanguage.cs` |
-| **Part 3** | Custom Integration Creation | `3-ItTools.cs`, `4-MailPit.cs` |
+| **Part 3** | Custom Integration Creation | `3-ItTools.cs` |
+| **Part 4** | MailPit Email Demo | `4-MailPit.cs` |
 | **Part 5** | Advanced Integration Patterns | `5-AdvancedIntegrations.cs` |
 | **Part 6** | Fun Demos | `6-Fun.cs` |
 
@@ -158,27 +159,32 @@ var mailpit = builder.AddMailPit("mailpit");
 
 **Learn More:** [Aspire Community Toolkit](https://github.com/CommunityToolkit/Aspire)
 
-# Part 6: Fun Demos
+---
 
-Because Aspire isn't just for web apps and databases!
+# Part 4: MailPit Email Demo
 
-## Demo: Minecraft Server 🎮
+Demonstrate email functionality in a local development environment using MailPit with an ASP.NET Core website.
 
-**Image:** `itzg/minecraft-server`
+## Demo: Email Sending with MailPit 📧
 
-Shows environment configuration, volumes, and non-HTTP endpoints.
+This demo shows how to wire up an ASP.NET Core application to send emails through MailPit, a local email testing tool.
 
 ```csharp
-var minecraft = builder.AddContainer("minecraft", "itzg/minecraft-server")
-    .WithEnvironment("EULA", "TRUE")
-    .WithEnvironment("MODE", "creative")
-    .WithEnvironment("MOTD", "Swetugg Stockholm 2026 - Aspire All The Things!")
-    .WithEndpoint(targetPort: 25565, port: 25565, name: "minecraft", scheme: "tcp")
-    .WithVolume("minecraft-data", "/data")
-    .ExcludeFromManifest();  // Dev-only, don't publish
+var mailpit = builder.AddMailPit("mailpit");
+
+builder.AddProject<Projects.AspireAllTheThings_MailDemo>("maildemo")
+    .WithReference(mailpit);
 ```
 
-**Connect:** `localhost:25565`
+**Key Concepts:**
+- `AddMailPit()` - Adds the MailPit container for local email testing
+- `WithReference()` - Connects the ASP.NET app to MailPit for SMTP configuration
+- No real email server needed during development!
+
+**How It Works:**
+1. MailPit runs as a container with SMTP and web UI endpoints
+2. The ASP.NET app receives SMTP connection details automatically
+3. Emails sent by the app are captured and viewable in MailPit's web UI
 
 ---
 
@@ -231,6 +237,30 @@ builder.AddDiscordNotifier("discord-alerts", webhookUrl)
 | 3 | Stop Redis in dashboard | 🛑 "**cache** stopped!" |
 | 4 | Restart Redis | ✅ "**cache** is ready!" |
 | 5 | Ctrl+C | 👋 "Aspire is shutting down!" |
+
+---
+
+# Part 6: Fun Demos
+
+Because Aspire isn't just for web apps and databases!
+
+## Demo: Minecraft Server 🎮
+
+**Image:** `itzg/minecraft-server`
+
+Shows environment configuration, volumes, and non-HTTP endpoints.
+
+```csharp
+var minecraft = builder.AddContainer("minecraft", "itzg/minecraft-server")
+    .WithEnvironment("EULA", "TRUE")
+    .WithEnvironment("MODE", "creative")
+    .WithEnvironment("MOTD", "Swetugg Stockholm 2026 - Aspire All The Things!")
+    .WithEndpoint(targetPort: 25565, port: 25565, name: "minecraft", scheme: "tcp")
+    .WithVolume("minecraft-data", "/data")
+    .ExcludeFromManifest();  // Dev-only, don't publish
+```
+
+**Connect:** `localhost:25565`
 
 ---
 
