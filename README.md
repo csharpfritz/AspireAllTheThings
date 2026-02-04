@@ -26,14 +26,15 @@ AspireAllTheThings/
 ├── AspireAllTheThings.AppHost/
 │   ├── AppHost.cs                    ← Main entry point (uncomment demos here)
 │   ├── 1-OfficialIntegrations.cs     ← Part 1: Redis, Postgres, SQL, Azure
-│   ├── 2-MultiLanguage.cs            ← Part 2: .NET, Python, Node.js
+│   ├── 2-MultiLanguage.cs            ← Part 2: .NET, Python, Node.js, Java
 │   ├── 3-ItTools.cs                  ← Part 3: Simple Docker container
 │   ├── 4-MailPit.cs                  ← Part 3: Community Toolkit
 │   ├── 5-AdvancedIntegrations.cs     ← Part 5: Discord Notifier (eventing)
 │   └── 6-Fun.cs                      ← Part 6: Minecraft
 ├── AspireAllTheThings.WebApi/        ← Sample ASP.NET Core API
 ├── python-api/                       ← Sample Python Flask API
-└── node-api/                         ← Sample Node.js Express API
+├── node-api/                         ← Sample Node.js Express API
+└── java-api/                         ← Sample Java Spring Boot API
 ```
 
 ---
@@ -123,6 +124,29 @@ builder.AddNpmApp("node-api", "../node-api", "start")
 ```
 
 **Setup:** `cd node-api && npm install`
+
+## Java Spring Boot API
+
+```csharp
+builder.AddSpringApp("java-api", "../java-api", new JavaAppExecutableResourceOptions
+{
+    ApplicationName = "target/java-api-0.0.1-SNAPSHOT.jar",
+    Port = 8080,
+    OtelAgentPath = "../AspireAllTheThings.AppHost/agents"  // Path to folder containing opentelemetry-javaagent.jar
+})
+.WithExternalHttpEndpoints();
+```
+
+**Setup:** 
+1. Install Java 21+: `winget install Microsoft.OpenJDK.21`
+2. Install Maven: Download from [Apache Maven](https://maven.apache.org/download.cgi)
+3. Build the JAR: `cd java-api && mvn package -DskipTests`
+4. Import Aspire dev cert into Java truststore (for OpenTelemetry):
+   ```powershell
+   dotnet dev-certs https --export-path "$env:TEMP\aspire-dev-cert.crt" --format PEM --no-password
+   # Run as Administrator:
+   keytool -importcert -trustcacerts -cacerts -storepass changeit -noprompt -alias aspire-dev-cert -file "$env:TEMP\aspire-dev-cert.crt"
+   ```
 
 ---
 
@@ -272,6 +296,7 @@ var minecraft = builder.AddContainer("minecraft", "itzg/minecraft-server")
 - Aspire workload installed
 - Python (for Part 2)
 - Node.js (for Part 2)
+- Java 21+ and Maven (for Part 2 - Java demo)
 
 ### Run the AppHost
 
@@ -291,6 +316,7 @@ builder.AddPostgresDemo();
 
 // ---- PART 2: Multi-Language Apps ----
 builder.AddAspNetApiDemo();
+builder.AddJavaApiDemo();  // Requires Java 21+ and Maven
 
 // ---- PART 3: Custom Integrations ----
 builder.AddItToolsDemo();
@@ -309,7 +335,7 @@ builder.AddMinecraftDemo();
 
 1. **Aspire simplifies distributed development** - No more complex Docker Compose files
 2. **Official integrations** - First-class support for databases and Azure services
-3. **Multi-language support** - .NET, Python, Node.js, and more
+3. **Multi-language support** - .NET, Python, Node.js, Java, and more
 4. **Add ANY container** - If it runs in Docker, it runs in Aspire
 5. **Community Toolkit** - Don't reinvent the wheel, leverage community integrations
 6. **Beyond web apps** - Aspire is a general-purpose orchestrator

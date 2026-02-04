@@ -33,6 +33,7 @@ builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 // builder.AddAspNetApiDemo();       // ASP.NET Core Web API
 // builder.AddPythonApiDemo();       // Python Flask API
 // builder.AddNodeApiDemo();         // Node.js Express API
+builder.AddJavaApiDemo();
 
 // // ---- PART 3: Custom Integrations ----
 // builder.AddItToolsDemo();         // Simple Docker container (3-ItTools.cs)

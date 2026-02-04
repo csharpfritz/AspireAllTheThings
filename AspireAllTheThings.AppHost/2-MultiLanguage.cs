@@ -6,13 +6,14 @@ namespace AspireAllTheThings.AppHost;
 /// PART 2: Multi-Language Application Support
 /// 
 /// Aspire isn't just for .NET! It can orchestrate applications written in
-/// any language. This demo shows ASP.NET, Python, and Node.js apps all
+/// any language. This demo shows ASP.NET, Python, Node.js, and Java apps all
 /// managed together by Aspire.
 /// 
 /// Key Concepts:
 /// - AddProject() - Add .NET projects
 /// - AddPythonApp() - Add Python applications (requires Python SDK)
 /// - AddNpmApp() - Add Node.js applications
+/// - AddSpringApp() - Add Java Spring Boot applications
 /// - WithReference() - Connect services together
 /// - WaitFor() - Define startup dependencies
 /// </summary>
@@ -71,14 +72,41 @@ public static class MultiLanguageDemo
     }
 
     /// <summary>
+    /// Demo: Java Spring Boot API
+    /// 
+    /// A Java Spring Boot application managed by Aspire.
+    /// Shows that Aspire works with Java applications!
+    /// 
+    /// Requirements:
+    /// - Java 21+ installed on the system
+    /// - Maven installed (or use Maven wrapper)
+    /// - Run: mvn package in the java-api folder to build the JAR
+    /// - Download OpenTelemetry Java agent to agents folder (optional for observability)
+    /// </summary>
+    public static IDistributedApplicationBuilder AddJavaApiDemo(this IDistributedApplicationBuilder builder)
+    {
+        var javaApp = builder.AddSpringApp("java-api", "../java-api", new JavaAppExecutableResourceOptions
+            {
+                ApplicationName = "target/java-api-0.0.1-SNAPSHOT.jar",
+                Port = 8080,
+                OtelAgentPath = "../AspireAllTheThings.AppHost/agents"
+            })
+            // .WithHttpEndpoint(port: 8080, env: "PORT")
+            .WithExternalHttpEndpoints();
+
+        return builder;
+    }
+
+    /// <summary>
     /// Add ALL multi-language demos at once
-    /// Shows .NET, Python, and Node.js apps all managed by Aspire
+    /// Shows .NET, Python, Node.js, and Java apps all managed by Aspire
     /// </summary>
     public static IDistributedApplicationBuilder AddAllMultiLanguageDemos(this IDistributedApplicationBuilder builder)
     {
         return builder
             .AddAspNetApiDemo()
             .AddPythonApiDemo()
-            .AddNodeApiDemo();
+            .AddNodeApiDemo()
+            .AddJavaApiDemo();
     }
 }
