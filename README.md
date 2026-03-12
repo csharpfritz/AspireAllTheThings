@@ -1,7 +1,5 @@
 # Hooking Up All The Things - Making Your Distributed Developer's Life Easier
 
-**Swetugg Stockholm 2026** | February 4, 12:50 | Liljeholmssalen
-
 > Distributed applications are powerful, but also complex to stitch together.
 > Between service discovery, configuration, observability, and deployment, developers
 > spend more time wiring up infrastructure than building features. Enter Aspire!
@@ -344,7 +342,7 @@ builder.AddMinecraftDemo();
 
 ## Resources
 
-- [.NET Aspire Documentation](https://learn.microsoft.com/dotnet/aspire)
+- [Aspire Documentation](https://aspire.dev)
 - [Aspire Community Toolkit](https://github.com/CommunityToolkit/Aspire)
 - [IT-Tools](https://github.com/CorentinTh/it-tools)
 - [MailPit](https://github.com/axllent/mailpit)
@@ -354,5 +352,3 @@ builder.AddMinecraftDemo();
 ---
 
 **Speaker:** Jeffrey T. Fritz
-
-🎉 Happy coding at Swetugg Stockholm 2026!
