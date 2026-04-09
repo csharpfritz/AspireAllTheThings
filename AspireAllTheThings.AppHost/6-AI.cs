@@ -1,7 +1,7 @@
 namespace AspireAllTheThings.AppHost;
 
 /// <summary>
-/// PART 7: AI Integration with GitHub Models
+/// PART 6: AI Integration with GitHub Models
 /// 
 /// GitHub Models provides access to AI models (like GPT-4o-mini) through
 /// GitHub's inference API. This demo shows how to add AI capabilities

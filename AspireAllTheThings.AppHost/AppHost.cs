@@ -24,11 +24,11 @@ var builder = DistributedApplication.CreateBuilder(args);
 // PART 5: Advanced Integration Patterns (5-AdvancedIntegrations.cs)
 //         Discord Notifier - custom eventing and lifecycle hooks
 // 
-// PART 6: Fun Demos (6-Fun.cs)
-//         Minecraft server - because Aspire isn't just for web apps
-//
-// PART 7: AI Integration (7-AI.cs)
+// PART 6: AI Integration (6-AI.cs)
 //         GitHub Models - AI chat with GenAI dashboard visualizer
+//
+// PART 7: Fun Demos (7-Fun.cs)
+//         Minecraft server - because Aspire isn't just for web apps (BONUS!)
 //
 // Uncomment each demo as you present them!
 // ============================================
@@ -59,12 +59,12 @@ builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 // //   dotnet user-secrets set "Discord:WebhookUrl" "https://discord.com/api/webhooks/..."
 // builder.AddDiscordNotifierDemo();
 
-// // ---- BONUS: Fun Demos (6-Fun.cs) ----
-// builder.AddMinecraftDemo();       // Minecraft server 
-
-// // ---- PART 7: AI Integration (7-AI.cs) ----
+// // ---- PART 6: AI Integration (6-AI.cs) ----
 // // GitHub Models - AI chat with GenAI dashboard visualizer
 // // Set "githubApiKey" parameter in user secrets or dashboard prompt
 // builder.AddGitHubModelDemo();
+
+// // ---- BONUS: Fun Demos (7-Fun.cs) ----
+// builder.AddMinecraftDemo();       // Minecraft server (capstone demo!)
 
 builder.Build().Run();

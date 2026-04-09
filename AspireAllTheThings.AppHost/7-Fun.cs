@@ -1,14 +1,14 @@
 namespace AspireAllTheThings.AppHost;
 
 /// <summary>
-/// PART 6: Fun Examples - Minecraft!
+/// PART 7: Fun Examples - Minecraft!
 /// 
 /// Because Aspire isn't just for web apps and databases - it can
 /// orchestrate ANY containerized workload. What better way to prove
-/// that than running Minecraft servers!
+/// that than running Minecraft servers! This is the BONUS capstone demo.
 /// 
 /// This demonstrates:
-/// - Demo 6a: Standard Minecraft server with custom MOTD
+/// - Demo 7a: Standard Minecraft server with custom MOTD
 /// 
 /// Both are excluded from the manifest so they won't be published to
 /// production - these are dev/demo tools only.
@@ -16,7 +16,7 @@ namespace AspireAllTheThings.AppHost;
 public static class FunDemo
 {
     /// <summary>
-    /// Demo 6a: Minecraft Server
+    /// Demo 7a: Minecraft Server
     /// 
     /// Uses itzg/minecraft-server - the most popular Minecraft Docker image
     /// with 100M+ pulls. Shows environment variable configuration.

@@ -15,8 +15,8 @@ This demo project is organized into **seven parts**:
 | **Part 3** | Custom Integration Creation | `3-ItTools.cs` |
 | **Part 4** | MailPit Email Demo | `4-MailPit.cs` |
 | **Part 5** | Advanced Integration Patterns | `5-AdvancedIntegrations.cs` |
-| **Part 6** | Fun Demos | `6-Fun.cs` |
-| **Part 7** | AI Integration with GitHub Models | `7-AI.cs` |
+| **Part 6** | AI Integration with GitHub Models | `6-AI.cs` |
+| **Part 7** | Fun Demos | `7-Fun.cs` |
 
 ## Project Structure
 
@@ -29,8 +29,8 @@ AspireAllTheThings/
 │   ├── 3-ItTools.cs                  ← Part 3: Simple Docker container
 │   ├── 4-MailPit.cs                  ← Part 4: MailPit Email Demo
 │   ├── 5-AdvancedIntegrations.cs     ← Part 5: Discord Notifier (eventing)
-│   ├── 6-Fun.cs                      ← Part 6: Minecraft
-│   └── 7-AI.cs                       ← Part 7: GitHub Models AI Chat
+│   ├── 6-AI.cs                       ← Part 6: GitHub Models AI Chat
+│   └── 7-Fun.cs                      ← Part 7: Minecraft (Bonus!)
 ├── AspireAllTheThings.WebApi/        ← Sample ASP.NET Core API
 ├── python-api/                       ← Sample Python Flask API
 ├── node-api/                         ← Sample Node.js Express API
@@ -262,31 +262,7 @@ builder.AddDiscordNotifier("discord-alerts", webhookUrl)
 
 ---
 
-# Part 6: Fun Demos
-
-Because Aspire isn't just for web apps and databases!
-
-## Demo: Minecraft Server 🎮
-
-**Image:** `itzg/minecraft-server`
-
-Shows environment configuration, volumes, and non-HTTP endpoints.
-
-```csharp
-var minecraft = builder.AddContainer("minecraft", "itzg/minecraft-server")
-    .WithEnvironment("EULA", "TRUE")
-    .WithEnvironment("MODE", "creative")
-    .WithEnvironment("MOTD", "CodeStock 2026 - Aspire All The Things!")
-    .WithEndpoint(targetPort: 25565, port: 25565, name: "minecraft", scheme: "tcp")
-    .WithVolume("minecraft-data", "/data")
-    .ExcludeFromManifest();  // Dev-only, don't publish
-```
-
-**Connect:** `localhost:25565`
-
----
-
-# Part 7: AI Integration with GitHub Models
+# Part 6: AI Integration with GitHub Models
 
 GitHub Models provides easy access to AI models (like GPT-4o-mini) through GitHub's inference API. This demo showcases the **GenAI Visualizer** in the Aspire dashboard, which automatically displays AI telemetry (token usage, latency, prompts and completions) when OpenTelemetry is flowing.
 
@@ -337,6 +313,30 @@ GET /chat?message=What is .NET Aspire?
 
 ---
 
+# Part 7: Fun Demos
+
+Because Aspire isn't just for web apps and databases!
+
+## Demo: Minecraft Server 🎮
+
+**Image:** `itzg/minecraft-server`
+
+Shows environment configuration, volumes, and non-HTTP endpoints.
+
+```csharp
+var minecraft = builder.AddContainer("minecraft", "itzg/minecraft-server")
+    .WithEnvironment("EULA", "TRUE")
+    .WithEnvironment("MODE", "creative")
+    .WithEnvironment("MOTD", "CodeStock 2026 - Aspire All The Things!")
+    .WithEndpoint(targetPort: 25565, port: 25565, name: "minecraft", scheme: "tcp")
+    .WithVolume("minecraft-data", "/data")
+    .ExcludeFromManifest();  // Dev-only, don't publish
+```
+
+**Connect:** `localhost:25565`
+
+---
+
 ## Running the Demos
 
 ### Prerequisites
@@ -376,11 +376,11 @@ builder.AddMailPitDemo();
 // ---- PART 5: Advanced Integration Patterns ----
 builder.AddDiscordNotifierDemo();  // Requires Discord:WebhookUrl in user secrets
 
-// ---- PART 6: Fun Demos ----
-builder.AddMinecraftDemo();
-
-// ---- PART 7: AI Integration ----
+// ---- PART 6: AI Integration ----
 builder.AddGitHubModelDemo();  // Requires GitHub PAT with models:read
+
+// ---- PART 7: Fun Demos (BONUS) ----
+builder.AddMinecraftDemo();
 ```
 
 ---
