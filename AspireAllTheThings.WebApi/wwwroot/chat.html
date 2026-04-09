@@ -213,7 +213,42 @@
         #chat-container::-webkit-scrollbar-thumb:hover {
             background: rgba(81, 43, 212, 0.8);
         }
+
+        /* Markdown content styling */
+        .message-content h1, .message-content h2, .message-content h3,
+        .message-content h4, .message-content h5, .message-content h6 {
+            margin: 0.5em 0 0.3em;
+        }
+        .message-content h1 { font-size: 1.4em; }
+        .message-content h2 { font-size: 1.25em; }
+        .message-content h3 { font-size: 1.1em; }
+        .message-content p { margin: 0.4em 0; }
+        .message-content ul, .message-content ol {
+            margin: 0.4em 0;
+            padding-left: 1.5em;
+        }
+        .message-content li { margin: 0.2em 0; }
+        .message-content code {
+            background: rgba(0,0,0,0.3);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .message-content pre {
+            background: rgba(0,0,0,0.3);
+            padding: 0.8em;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 0.5em 0;
+        }
+        .message-content pre code {
+            background: none;
+            padding: 0;
+        }
+        .message-content strong { font-weight: 700; }
+        .message-content a { color: #a78bfa; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <header>
@@ -259,7 +294,11 @@
 
             const content = document.createElement('div');
             content.className = 'message-content';
-            content.textContent = text;
+            if (isUser) {
+                content.textContent = text;
+            } else {
+                content.innerHTML = marked.parse(text);
+            }
 
             messageDiv.appendChild(avatar);
             messageDiv.appendChild(content);

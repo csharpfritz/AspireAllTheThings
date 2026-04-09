@@ -34,12 +34,12 @@ var builder = DistributedApplication.CreateBuilder(args);
 // ============================================
 
 // ---- PART 1: Official Integrations (1-OfficialIntegrations.cs) ----
-builder.AddRedisDemo();           // Redis with Redis Insight
-builder.AddPostgresDemo();        // PostgreSQL with pgAdmin
-builder.AddSqlServerDemo();       // SQL Server
-builder.AddAzureServiceBusDemo(); // Service Bus with emulator
-builder.AddAzureCosmosDbDemo();   // Cosmos DB with emulator
-builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
+// builder.AddRedisDemo();           // Redis with Redis Insight
+// builder.AddPostgresDemo();        // PostgreSQL with pgAdmin
+// builder.AddSqlServerDemo();       // SQL Server
+// builder.AddAzureServiceBusDemo(); // Service Bus with emulator
+// builder.AddAzureCosmosDbDemo();   // Cosmos DB with emulator
+// builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 
 // // ---- PART 2: Multi-Language Apps (2-MultiLanguage.cs) ----
 // builder.AddAspNetApiDemo();       // ASP.NET Core Web API
@@ -64,7 +64,7 @@ builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 // // ---- PART 6: AI Integration (6-AI.cs) ----
 // // GitHub Models - AI chat with GenAI dashboard visualizer
 // // Set "githubApiKey" parameter in user secrets or dashboard prompt
-// builder.AddGitHubModelDemo();
+builder.AddGitHubModelDemo();
 
 // // ---- BONUS: Fun Demos (7-Fun.cs) ----
 // builder.AddMinecraftDemo();       // Minecraft server (capstone demo!)

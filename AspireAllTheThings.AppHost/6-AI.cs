@@ -38,17 +38,16 @@ public static class AiDemo
     /// </summary>
     public static IDistributedApplicationBuilder AddGitHubModelDemo(this IDistributedApplicationBuilder builder)
     {
-        // Secret parameter — the Aspire dashboard will prompt for this interactively
-        var apiKey = builder.AddParameter("githubApiKey", secret: true);
+
 
         // Register a GitHub Model resource using GPT-4o-mini
-        var chat = builder.AddGitHubModel("chat", "openai/gpt-4o-mini")
-            .WithApiKey(apiKey);
+        var chat = builder.AddGitHubModel("chat", "openai/gpt-4o-mini");
 
         // Wire the model to the WebApi project so it can use IChatClient
         builder.AddProject<Projects.AspireAllTheThings_WebApi>("webapi")
             .WithExternalHttpEndpoints()
-            .WithReference(chat);
+            .WithReference(chat)
+            .WithUrlForEndpoint("http", url => { url.Url = "/chat.html"; url.DisplayText = "Chat"; });
 
         return builder;
     }
