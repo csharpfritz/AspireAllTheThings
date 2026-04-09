@@ -19,6 +19,9 @@ var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
+// Serve static files (chat.html)
+app.UseStaticFiles();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -46,18 +49,20 @@ app.MapGet("/weatherforecast", () =>
 
 // AI Chat endpoint - uses GitHub Models via IChatClient
 // Only available when Part 6 (AddGitHubModelDemo) is enabled in AppHost
-app.MapGet("/chat", async (IChatClient? chatClient, string? message) =>
+app.MapPost("/chat", async (IChatClient? chatClient, ChatRequest request) =>
 {
     if (chatClient is null)
         return Results.Problem("AI not configured. Enable Part 6 in AppHost.cs and set the GitHub API key.");
 
-    var prompt = message ?? "Hello! What can you help me with today?";
+    var prompt = request.Message ?? "Hello! What can you help me with today?";
     var response = await chatClient.GetResponseAsync(prompt);
     return Results.Ok(new { prompt, response = response.Text });
 })
 .WithName("Chat");
 
 app.Run();
+
+record ChatRequest(string? Message);
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
