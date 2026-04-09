@@ -305,11 +305,13 @@ Or simply enter the token in the Aspire dashboard's interactive parameter prompt
 
 ### Try It
 
-After starting the AppHost, call the `/chat` endpoint on the WebApi:
+After starting the AppHost, open the chat UI in your browser:
 
 ```
-GET /chat?message=What is .NET Aspire?
+http://localhost:{port}/chat.html
 ```
+
+The chat page provides a dark-themed interface where you can type messages and see AI responses in real time. Watch the Aspire dashboard's **GenAI Visualizer** light up with token usage and latency data as you chat!
 
 ---
 
