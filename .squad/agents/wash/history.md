@@ -14,7 +14,7 @@
 - Python and Node APIs both reference `ConnectionStrings__shared-cache` for Redis, matching Aspire's naming convention
 - Java API uses Spring Boot Actuator for `/actuator/health` plus a custom `/health` endpoint — both work fine
 - The `agents/` directory under AppHost is for the optional OTel Java agent; it exists but is empty (agent downloaded at user's discretion)
-- Conference reference across all APIs is "Swetugg Stockholm 2026" — update this when targeting a different event
+- Conference reference across all APIs is "CodeStock 2026" — update this when targeting a different event
 - Spring Boot 3.4.x is the right line for Java 21+ demos (stable, LTS); don't jump to 4.0 for training demos
 - Express 4.x is intentionally kept over Express 5.x to avoid breaking changes in a demo that's about Aspire, not Express
 - Python Redis connection parsing strips `tcp://` prefix then splits `host:port` — works with Aspire's injection format

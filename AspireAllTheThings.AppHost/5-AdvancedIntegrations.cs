@@ -191,7 +191,7 @@ public static class DiscordNotifierResourceBuilderExtensions
                 notifier.WebhookUrl,
                 title: "🚀 Aspire is starting up!",
                 description: $"Launching **{resourceCount}** resources...\n\n" +
-                            $"_Swetugg Stockholm 2026 - Aspire All The Things!_",
+                            $"_CodeStock 2026 - Aspire All The Things!_",
                 color: DiscordColors.Blue,
                 ct);
         });

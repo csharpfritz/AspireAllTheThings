@@ -22,7 +22,7 @@ public class IndexModel : PageModel
     public string ToEmail { get; set; } = "attendee@example.com";
 
     [BindProperty]
-    public string Subject { get; set; } = "Hello from Swetugg Stockholm 2026! 🎉";
+    public string Subject { get; set; } = "Hello from CodeStock 2026! 🎉";
 
     [BindProperty]
     public string Body { get; set; } = @"Hi there!

@@ -18,7 +18,7 @@ public class ApiController {
         return Map.of(
             "message", "Hello from Java Spring Boot API!",
             "managed_by", "Aspire",
-            "conference", "Swetugg Stockholm 2026"
+            "conference", "CodeStock 2026"
         );
     }
 

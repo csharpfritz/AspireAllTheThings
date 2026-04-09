@@ -35,7 +35,7 @@ public static class FunDemo
             .WithEnvironment("EULA", "TRUE")
             .WithEnvironment("MODE", "creative")
             .WithEnvironment("DIFFICULTY", "peaceful")
-            .WithEnvironment("MOTD", "Swetugg Stockholm 2026 - Aspire All The Things!")
+            .WithEnvironment("MOTD", "CodeStock 2026 - Aspire All The Things!")
             .WithEndpoint(targetPort: 25565, port: 25565, name: "minecraft", scheme: "tcp")
             .WithVolume("minecraft-data", "/data")
             .ExcludeFromManifest();  // Don't publish - dev/demo only!

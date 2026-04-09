@@ -274,7 +274,7 @@ Shows environment configuration, volumes, and non-HTTP endpoints.
 var minecraft = builder.AddContainer("minecraft", "itzg/minecraft-server")
     .WithEnvironment("EULA", "TRUE")
     .WithEnvironment("MODE", "creative")
-    .WithEnvironment("MOTD", "Swetugg Stockholm 2026 - Aspire All The Things!")
+    .WithEnvironment("MOTD", "CodeStock 2026 - Aspire All The Things!")
     .WithEndpoint(targetPort: 25565, port: 25565, name: "minecraft", scheme: "tcp")
     .WithVolume("minecraft-data", "/data")
     .ExcludeFromManifest();  // Dev-only, don't publish

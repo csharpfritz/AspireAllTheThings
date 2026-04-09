@@ -48,7 +48,7 @@ Redis npm v5 changed APIs. Updated minimum from 4.6.12 → 4.7.0 within the same
 - Python equirements.txt: No changes needed (flask>=3.0.0, redis>=5.0.0 are current)
 
 #### Open Items
-- Conference reference "Swetugg Stockholm 2026" appears in all three APIs; update across all when targeting a different event.
+- Conference reference "CodeStock 2026" appears in all three APIs; update across all when targeting a different event.
 
 ## Governance
 

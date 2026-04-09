@@ -26,7 +26,7 @@ def home():
     return jsonify({
         "message": "Hello from Python Flask API!",
         "managed_by": "Aspire",
-        "conference": "Swetugg Stockholm 2026"
+        "conference": "CodeStock 2026"
     })
 
 @app.route('/health')

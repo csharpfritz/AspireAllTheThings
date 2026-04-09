@@ -3,7 +3,7 @@ using AspireAllTheThings.AppHost;
 var builder = DistributedApplication.CreateBuilder(args);
 
 // ============================================
-// Swetugg Stockholm 2026 - Aspire All The Things!
+// CodeStock 2026 - Aspire All The Things!
 // "Hooking Up All The Things, Making Your Distributed Developer's Life Easier"
 // ============================================
 // 

@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.json({
         message: 'Hello from Node.js Express API!',
         managed_by: 'Aspire',
-        conference: 'Swetugg Stockholm 2026'
+        conference: 'CodeStock 2026'
     });
 });
 
