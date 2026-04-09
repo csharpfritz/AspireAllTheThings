@@ -1,10 +1,19 @@
+using Microsoft.Extensions.AI;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Register the AI chat client from GitHub Models when Part 7 is enabled
+// (connection is only available when AddGitHubModelDemo() is uncommented in AppHost)
+if (builder.Configuration.GetConnectionString("chat") is not null)
+{
+    builder.AddAzureChatCompletionsClient("chat")
+        .AddChatClient();
+}
 
 var app = builder.Build();
 
@@ -34,6 +43,19 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+// AI Chat endpoint - uses GitHub Models via IChatClient
+// Only available when Part 7 (AddGitHubModelDemo) is enabled in AppHost
+app.MapGet("/chat", async (IChatClient? chatClient, string? message) =>
+{
+    if (chatClient is null)
+        return Results.Problem("AI not configured. Enable Part 7 in AppHost.cs and set the GitHub API key.");
+
+    var prompt = message ?? "Hello! What can you help me with today?";
+    var response = await chatClient.GetResponseAsync(prompt);
+    return Results.Ok(new { prompt, response = response.Text });
+})
+.WithName("Chat");
 
 app.Run();
 

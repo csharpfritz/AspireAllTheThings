@@ -6,7 +6,7 @@
 
 ## Session Overview
 
-This demo project is organized into **six parts**:
+This demo project is organized into **seven parts**:
 
 | Part | Topic | Files |
 |------|-------|-------|
@@ -16,6 +16,7 @@ This demo project is organized into **six parts**:
 | **Part 4** | MailPit Email Demo | `4-MailPit.cs` |
 | **Part 5** | Advanced Integration Patterns | `5-AdvancedIntegrations.cs` |
 | **Part 6** | Fun Demos | `6-Fun.cs` |
+| **Part 7** | AI Integration with GitHub Models | `7-AI.cs` |
 
 ## Project Structure
 
@@ -28,7 +29,8 @@ AspireAllTheThings/
 │   ├── 3-ItTools.cs                  ← Part 3: Simple Docker container
 │   ├── 4-MailPit.cs                  ← Part 4: MailPit Email Demo
 │   ├── 5-AdvancedIntegrations.cs     ← Part 5: Discord Notifier (eventing)
-│   └── 6-Fun.cs                      ← Part 6: Minecraft
+│   ├── 6-Fun.cs                      ← Part 6: Minecraft
+│   └── 7-AI.cs                       ← Part 7: GitHub Models AI Chat
 ├── AspireAllTheThings.WebApi/        ← Sample ASP.NET Core API
 ├── python-api/                       ← Sample Python Flask API
 ├── node-api/                         ← Sample Node.js Express API
@@ -284,6 +286,57 @@ var minecraft = builder.AddContainer("minecraft", "itzg/minecraft-server")
 
 ---
 
+# Part 7: AI Integration with GitHub Models
+
+GitHub Models provides easy access to AI models (like GPT-4o-mini) through GitHub's inference API. This demo showcases the **GenAI Visualizer** in the Aspire dashboard, which automatically displays AI telemetry (token usage, latency, prompts and completions) when OpenTelemetry is flowing.
+
+## Demo: GitHub Models Chat 🤖
+
+**Package:** `Aspire.Hosting.GitHub.Models` (AppHost), `Aspire.Azure.AI.Inference` (Client)
+
+```csharp
+var apiKey = builder.AddParameter("githubApiKey", secret: true);
+
+var chat = builder.AddGitHubModel("chat", "openai/gpt-4o-mini")
+    .WithApiKey(apiKey);
+
+builder.AddProject<Projects.AspireAllTheThings_WebApi>("webapi")
+    .WithExternalHttpEndpoints()
+    .WithReference(chat);
+```
+
+### Setup
+
+1. Create a GitHub [Personal Access Token](https://github.com/settings/tokens) with the **models: read** permission
+2. Store the token in user secrets:
+
+```bash
+cd AspireAllTheThings.AppHost
+dotnet user-secrets set "Parameters:githubApiKey" "github_pat_YOUR_TOKEN"
+```
+
+Or simply enter the token in the Aspire dashboard's interactive parameter prompt at startup!
+
+### Key Concepts
+
+| Concept | What It Shows |
+|---------|---------------|
+| **AddParameter(secret: true)** | Dashboard prompts for the API key interactively |
+| **AddGitHubModel()** | Registers a GitHub Model resource |
+| **WithApiKey()** | Wires secret parameter to the model |
+| **GenAI Visualizer** | Dashboard shows AI telemetry automatically via OpenTelemetry |
+| **IChatClient** | Microsoft.Extensions.AI abstraction for provider-agnostic AI |
+
+### Try It
+
+After starting the AppHost, call the `/chat` endpoint on the WebApi:
+
+```
+GET /chat?message=What is .NET Aspire?
+```
+
+---
+
 ## Running the Demos
 
 ### Prerequisites
@@ -325,6 +378,9 @@ builder.AddDiscordNotifierDemo();  // Requires Discord:WebhookUrl in user secret
 
 // ---- PART 6: Fun Demos ----
 builder.AddMinecraftDemo();
+
+// ---- PART 7: AI Integration ----
+builder.AddGitHubModelDemo();  // Requires GitHub PAT with models:read
 ```
 
 ---
@@ -337,6 +393,7 @@ builder.AddMinecraftDemo();
 4. **Add ANY container** - If it runs in Docker, it runs in Aspire
 5. **Community Toolkit** - Don't reinvent the wheel, leverage community integrations
 6. **Beyond web apps** - Aspire is a general-purpose orchestrator
+7. **AI integration** - GitHub Models with GenAI dashboard visualization
 
 ---
 
@@ -348,6 +405,7 @@ builder.AddMinecraftDemo();
 - [MailPit](https://github.com/axllent/mailpit)
 - [Minecraft Server Docker Image](https://github.com/itzg/docker-minecraft-server)
 - [Discord Webhooks Documentation](https://discord.com/developers/docs/resources/webhook)
+- [GitHub Models](https://docs.github.com/github-models)
 
 ---
 

@@ -7,7 +7,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 // "Hooking Up All The Things, Making Your Distributed Developer's Life Easier"
 // ============================================
 // 
-// This session is organized in 6 parts:
+// This session is organized in 7 parts:
 // 
 // PART 1: Official Aspire Integrations (1-OfficialIntegrations.cs)
 //         Redis, PostgreSQL, SQL Server, Azure Service Bus, Cosmos DB, Storage
@@ -26,6 +26,9 @@ var builder = DistributedApplication.CreateBuilder(args);
 // 
 // PART 6: Fun Demos (6-Fun.cs)
 //         Minecraft server - because Aspire isn't just for web apps
+//
+// PART 7: AI Integration (7-AI.cs)
+//         GitHub Models - AI chat with GenAI dashboard visualizer
 //
 // Uncomment each demo as you present them!
 // ============================================
@@ -58,5 +61,10 @@ builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 
 // // ---- BONUS: Fun Demos (6-Fun.cs) ----
 // builder.AddMinecraftDemo();       // Minecraft server 
+
+// // ---- PART 7: AI Integration (7-AI.cs) ----
+// // GitHub Models - AI chat with GenAI dashboard visualizer
+// // Set "githubApiKey" parameter in user secrets or dashboard prompt
+// builder.AddGitHubModelDemo();
 
 builder.Build().Run();
