@@ -42,10 +42,10 @@ var builder = DistributedApplication.CreateBuilder(args);
 // builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 
 // // ---- PART 2: Multi-Language Apps (2-MultiLanguage.cs) ----
-// builder.AddAspNetApiDemo();       // ASP.NET Core Web API
-// builder.AddPythonApiDemo();       // Python Flask API
-// builder.AddNodeApiDemo();         // Node.js Express API
-// builder.AddJavaApiDemo();				// Java Spring Boot API
+builder.AddAspNetApiDemo();       // ASP.NET Core Web API
+builder.AddPythonApiDemo();       // Python Flask API
+builder.AddNodeApiDemo();         // Node.js Express API
+builder.AddJavaApiDemo();				// Java Spring Boot API
 
 // // ---- PART 3: Custom Integration Creation (3-ItTools.cs) ----
 // builder.AddItToolsDemo();         // Simple Docker container
@@ -64,7 +64,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 // // ---- PART 6: AI Integration (6-AI.cs) ----
 // // GitHub Models - AI chat with GenAI dashboard visualizer
 // // Set "githubApiKey" parameter in user secrets or dashboard prompt
-builder.AddGitHubModelDemo();
+// builder.AddGitHubModelDemo();
 
 // // ---- BONUS: Fun Demos (7-Fun.cs) ----
 // builder.AddMinecraftDemo();       // Minecraft server (capstone demo!)
