@@ -73,6 +73,53 @@ User directive (2026-04-09T13:46) requested keeping Minecraft as the final, fun 
 
 ---
 
+### Decision: Part 6 AI Demo — Chat UI Implementation
+
+**Date:** 2026-04-09  
+**Author:** Kaylee (Backend Dev)  
+**Status:** Implemented  
+**Requested by:** Jeffrey T. Fritz
+
+#### Context
+The Part 6 AI Integration demo had a bare GET `/chat?message=...` endpoint returning JSON. For live demos at CodeStock 2026, a visually appealing chat UI was needed for audience engagement rather than just JSON responses.
+
+#### Resolution
+
+**1. Changed `/chat` Endpoint from GET to POST**
+- Accepts JSON body `{ "message": "..." }` instead of query string
+- Response format remains: `{ "prompt": "...", "response": "..." }`
+
+**2. Created Self-Contained Chat UI**
+- File: `AspireAllTheThings.WebApi/wwwroot/chat.html`
+- Single HTML file with inline CSS/JavaScript (no external dependencies)
+- Dark theme matching Aspire dashboard (purple/dark gradient)
+- Features: Chat bubbles, loading indicator, error handling, responsive layout
+- Uses vanilla JavaScript and `fetch()` to call POST `/chat` endpoint
+
+**3. Enabled Static File Serving**
+- Added `app.UseStaticFiles();` to Program.cs
+- Chat UI accessible at `/chat.html`
+
+**4. Updated Demo Script**
+- `.squad/files/part6-ai-demo-script.md` updated
+- Step 2: Reflects POST with ChatRequest
+- Step 6: Replaced endpoint test with `/chat.html` visual demo
+
+#### Impact
+- **Files changed:** Program.cs (UseStaticFiles, POST endpoint, ChatRequest record), new wwwroot/chat.html
+- **Demo script updated:** Part 6 steps 2 & 6 revised
+- **Build verified:** Clean
+- **UX improvement:** Polished, stage-friendly chat interface for live demo
+- **Backward compatibility:** /weatherforecast unchanged; IChatClient pattern intact
+
+#### Technical Notes
+- Static file middleware must come after `app.Build()` and before endpoint mapping
+- Record types in top-level programs must come after `app.Run()` to avoid CS8803
+- Self-contained HTML avoids build step and bundling complexity
+- Chat UI gracefully handles null IChatClient (displays friendly error)
+
+---
+
 ### User Directives
 
 #### 2026-04-09T13:16:04Z — Update Conference References
