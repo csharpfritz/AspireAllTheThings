@@ -1,0 +1,13 @@
+[
+  {
+    "assignment_id": "aspireallthethings-firefly-001",
+    "universe": "Firefly",
+    "created_at": "2026-04-09T13:05:33Z",
+    "agents": [
+      { "name": "Mal", "role": "Lead" },
+      { "name": "Kaylee", "role": "Backend Dev" },
+      { "name": "Wash", "role": "Full-Stack Dev" },
+      { "name": "Zoe", "role": "Tester" }
+    ]
+  }
+]
