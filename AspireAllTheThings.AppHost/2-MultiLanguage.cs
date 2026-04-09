@@ -12,7 +12,7 @@ namespace AspireAllTheThings.AppHost;
 /// Key Concepts:
 /// - AddProject() - Add .NET projects
 /// - AddPythonApp() - Add Python applications (requires Python SDK)
-/// - AddNpmApp() - Add Node.js applications
+/// - AddJavaScriptApp() - Add JavaScript/Node.js applications
 /// - AddSpringApp() - Add Java Spring Boot applications
 /// - WithReference() - Connect services together
 /// - WaitFor() - Define startup dependencies
@@ -64,7 +64,7 @@ public static class MultiLanguageDemo
     /// </summary>
     public static IDistributedApplicationBuilder AddNodeApiDemo(this IDistributedApplicationBuilder builder)
     {
-        var nodeApp = builder.AddNpmApp("node-api", "../node-api", "start")
+        var nodeApp = builder.AddJavaScriptApp("node-api", "../node-api", runScriptName: "start")
             .WithHttpEndpoint(port: 3000, env: "PORT")
             .WithExternalHttpEndpoints();
 

@@ -7,16 +7,25 @@ var builder = DistributedApplication.CreateBuilder(args);
 // "Hooking Up All The Things, Making Your Distributed Developer's Life Easier"
 // ============================================
 // 
-// This session is organized in 3 parts:
+// This session is organized in 6 parts:
 // 
 // PART 1: Official Aspire Integrations (1-OfficialIntegrations.cs)
 //         Redis, PostgreSQL, SQL Server, Azure Service Bus, Cosmos DB, Storage
 // 
 // PART 2: Multi-Language Support (2-MultiLanguage.cs)
-//         ASP.NET, Python Flask, Node.js Express - all managed by Aspire
+//         ASP.NET, Python Flask, Node.js Express, Java Spring Boot
 // 
-// PART 3: Custom Integration Creation (3-ItTools.cs, 4-MailPit.cs, 5-Fun.cs)
+// PART 3: Custom Integration Creation (3-ItTools.cs)
 //         Build your own integrations with Docker containers
+// 
+// PART 4: MailPit Email Demo (4-MailPit.cs)
+//         Community Toolkit integration for local email testing
+// 
+// PART 5: Advanced Integration Patterns (5-AdvancedIntegrations.cs)
+//         Discord Notifier - custom eventing and lifecycle hooks
+// 
+// PART 6: Fun Demos (6-Fun.cs)
+//         Minecraft server - because Aspire isn't just for web apps
 //
 // Uncomment each demo as you present them!
 // ============================================
@@ -35,9 +44,11 @@ builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 // builder.AddNodeApiDemo();         // Node.js Express API
 // builder.AddJavaApiDemo();				// Java Spring Boot API
 
-// // ---- PART 3: Custom Integrations ----
-// builder.AddItToolsDemo();         // Simple Docker container (3-ItTools.cs)
-// builder.AddMailPitDemo();         // Community Toolkit (4-MailPit.cs)
+// // ---- PART 3: Custom Integration Creation (3-ItTools.cs) ----
+// builder.AddItToolsDemo();         // Simple Docker container
+
+// // ---- PART 4: MailPit Email Demo (4-MailPit.cs) ----
+// builder.AddMailPitDemo();         // Community Toolkit integration
 
 // // ---- PART 5: Advanced Integration Patterns (5-AdvancedIntegrations.cs) ----
 // // Discord Notifier - Posts to Discord when resources change state

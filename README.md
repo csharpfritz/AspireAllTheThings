@@ -6,7 +6,7 @@
 
 ## Session Overview
 
-This demo project is organized into **five parts**:
+This demo project is organized into **six parts**:
 
 | Part | Topic | Files |
 |------|-------|-------|
@@ -26,7 +26,7 @@ AspireAllTheThings/
 │   ├── 1-OfficialIntegrations.cs     ← Part 1: Redis, Postgres, SQL, Azure
 │   ├── 2-MultiLanguage.cs            ← Part 2: .NET, Python, Node.js, Java
 │   ├── 3-ItTools.cs                  ← Part 3: Simple Docker container
-│   ├── 4-MailPit.cs                  ← Part 3: Community Toolkit
+│   ├── 4-MailPit.cs                  ← Part 4: MailPit Email Demo
 │   ├── 5-AdvancedIntegrations.cs     ← Part 5: Discord Notifier (eventing)
 │   └── 6-Fun.cs                      ← Part 6: Minecraft
 ├── AspireAllTheThings.WebApi/        ← Sample ASP.NET Core API
@@ -116,7 +116,7 @@ builder.AddPythonApp("python-api", "../python-api", "app.py")
 ## Node.js Express API
 
 ```csharp
-builder.AddNpmApp("node-api", "../node-api", "start")
+builder.AddJavaScriptApp("node-api", "../node-api", runScriptName: "start")
     .WithHttpEndpoint(port: 3000, env: "PORT")
     .WithExternalHttpEndpoints();
 ```
@@ -169,23 +169,19 @@ var itTools = builder.AddContainer("it-tools", "corentinth/it-tools")
 - `WithHttpEndpoint()` - Expose HTTP ports
 - `WithExternalHttpEndpoints()` - Make accessible from the dashboard
 
-## Demo: MailPit (Community Toolkit)
-
-**Package:** `CommunityToolkit.Aspire.Hosting.Mailpit`
-
-One line of code instead of manual container configuration!
-
-```csharp
-var mailpit = builder.AddMailPit("mailpit");
-```
-
-**Learn More:** [Aspire Community Toolkit](https://github.com/CommunityToolkit/Aspire)
-
 ---
 
 # Part 4: MailPit Email Demo
 
-Demonstrate email functionality in a local development environment using MailPit with an ASP.NET Core website.
+**Package:** `CommunityToolkit.Aspire.Hosting.Mailpit`
+
+One line of code instead of manual container configuration! Demonstrate email functionality in a local development environment using MailPit with an ASP.NET Core website.
+
+## Demo: MailPit (Community Toolkit)
+
+```csharp
+var mailpit = builder.AddMailPit("mailpit");
+```
 
 ## Demo: Email Sending with MailPit 📧
 
@@ -207,6 +203,8 @@ builder.AddProject<Projects.AspireAllTheThings_MailDemo>("maildemo")
 1. MailPit runs as a container with SMTP and web UI endpoints
 2. The ASP.NET app receives SMTP connection details automatically
 3. Emails sent by the app are captured and viewable in MailPit's web UI
+
+**Learn More:** [Aspire Community Toolkit](https://github.com/CommunityToolkit/Aspire)
 
 ---
 
@@ -316,8 +314,10 @@ builder.AddPostgresDemo();
 builder.AddAspNetApiDemo();
 builder.AddJavaApiDemo();  // Requires Java 21+ and Maven
 
-// ---- PART 3: Custom Integrations ----
+// ---- PART 3: Custom Integration Creation ----
 builder.AddItToolsDemo();
+
+// ---- PART 4: MailPit Email Demo ----
 builder.AddMailPitDemo();
 
 // ---- PART 5: Advanced Integration Patterns ----
