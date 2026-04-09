@@ -50,6 +50,48 @@ Redis npm v5 changed APIs. Updated minimum from 4.6.12 → 4.7.0 within the same
 #### Open Items
 - Conference reference "CodeStock 2026" appears in all three APIs; update across all when targeting a different event.
 
+### Decision: Reorder Demo Parts 6 & 7 — AI Integration / Fun Capstone
+
+**Date:** 2026-04-09  
+**Author:** Kaylee (Backend Dev)  
+**Status:** Applied
+
+#### Context
+User directive (2026-04-09T13:46) requested keeping Minecraft as the final, fun capstone demo. To support narrative flow, reordered Parts 6 & 7 so AI Integration comes before the Fun demos.
+
+#### Resolution
+- Renamed `7-AI.cs` → `6-AI.cs`
+- Renamed `6-Fun.cs` → `7-Fun.cs`
+- Updated all inline comments and extension method headers
+- Reordered AppHost.cs header and demo builder sections
+- Updated README.md part table and narrative
+
+#### Impact
+- Demo order now: Part 1–5 (Integrations, Multi-Language, IT-Tools, MailPit, Discord) → **Part 6 (AI Integration)** → **Part 7 (Fun/Minecraft, final capstone)**
+- All file names, comments, and cross-references updated
+- Build verified: clean
+
+---
+
+### User Directives
+
+#### 2026-04-09T13:16:04Z — Update Conference References
+**By:** Jeffrey T. Fritz  
+**What:** Update all conference references from "Swetugg Stockholm 2026" to "CodeStock 2026"  
+**Status:** Captured for team action
+
+#### 2026-04-09T13:31:19Z — Focus on GitHub Models, Drop Low-Priority Demos
+**By:** Jeffrey T. Fritz  
+**What:** Focus new demo additions on GitHub Models (easy, impactful). Drop DevTunnels demo (audience can't browse from phones in ballroom without Minecraft). ExternalService and YARP need clearer use cases before committing.  
+**Status:** Captured for team action
+
+#### 2026-04-09T13:46:00Z — Keep Minecraft as Final Demo
+**By:** Jeffrey T. Fritz  
+**What:** Keep Minecraft (Fun Demos) as the last demo — it's the fun capstone that puts a cap on everything.  
+**Status:** ✅ Applied (Parts 6/7 reordered per this directive)
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus
