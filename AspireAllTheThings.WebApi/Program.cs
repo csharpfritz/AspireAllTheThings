@@ -7,7 +7,7 @@ builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddOpenApi();
 
-// Register the AI chat client from GitHub Models when Part 7 is enabled
+// Register the AI chat client from GitHub Models when Part 6 is enabled
 // (connection is only available when AddGitHubModelDemo() is uncommented in AppHost)
 if (builder.Configuration.GetConnectionString("chat") is not null)
 {
@@ -45,11 +45,11 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast");
 
 // AI Chat endpoint - uses GitHub Models via IChatClient
-// Only available when Part 7 (AddGitHubModelDemo) is enabled in AppHost
+// Only available when Part 6 (AddGitHubModelDemo) is enabled in AppHost
 app.MapGet("/chat", async (IChatClient? chatClient, string? message) =>
 {
     if (chatClient is null)
-        return Results.Problem("AI not configured. Enable Part 7 in AppHost.cs and set the GitHub API key.");
+        return Results.Problem("AI not configured. Enable Part 6 in AppHost.cs and set the GitHub API key.");
 
     var prompt = message ?? "Hello! What can you help me with today?";
     var response = await chatClient.GetResponseAsync(prompt);
