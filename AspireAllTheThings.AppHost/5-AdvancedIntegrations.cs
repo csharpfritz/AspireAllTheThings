@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Eventing;
+using Microsoft.Extensions.Configuration;
 
 namespace AspireAllTheThings.AppHost;
 
@@ -26,34 +27,44 @@ namespace AspireAllTheThings.AppHost;
 /// 3. BeforeStartEvent, ResourceReadyEvent, ResourceStoppedEvent
 /// 4. Extension method patterns (Add*, With*)
 /// 5. IResourceWithWaitSupport for WaitFor() compatibility
+/// 6. Interactive Parameter Prompts — the dashboard prompts for values at startup!
 /// </summary>
 public static class AdvancedIntegrationsDemo
 {
     /// <summary>
-    /// Adds the Discord Notifier demo.
+    /// Adds the Discord Notifier demo with interactive parameter prompts.
     /// 
-    /// SETUP REQUIRED:
-    /// 1. Create a Discord webhook: Server Settings → Integrations → Webhooks → New Webhook
-    /// 2. Store the URL: dotnet user-secrets set "Discord:WebhookUrl" "https://discord.com/api/webhooks/..."
+    /// This demo showcases Aspire's parameter prompt feature in the dashboard:
+    /// - Secret parameters (webhook URL) show a masked password field
+    /// - Regular parameters (channel name) show a standard text field
     /// 
-    /// Or for demo purposes, pass the URL directly (not recommended for real use).
+    /// SETUP OPTIONS:
+    /// Option A — Pre-fill via user secrets (no prompt):
+    ///   dotnet user-secrets set "Parameters:discordWebhookUrl" "https://discord.com/api/webhooks/..."
+    ///   dotnet user-secrets set "Parameters:discordChannel" "aspire-demo"
+    /// 
+    /// Option B — Leave blank and enter values in the Aspire dashboard prompt at startup
     /// </summary>
     public static IDistributedApplicationBuilder AddDiscordNotifierDemo(
         this IDistributedApplicationBuilder builder)
     {
-        // Get webhook URL from configuration (user secrets in dev)
-        var webhookUrl = builder.Configuration["Discord:WebhookUrl"];
-        
-        if (string.IsNullOrEmpty(webhookUrl))
-        {
-            // No webhook configured - skip the demo gracefully
-            Console.WriteLine("⚠️  Discord webhook not configured. Skipping Discord notifier demo.");
-            Console.WriteLine("   Set 'Discord:WebhookUrl' in user secrets to enable.");
-            return builder;
-        }
+        // Interactive parameter prompts — these appear in the Aspire dashboard!
+        // Secret: masked password field  |  Regular: standard text field
+        // WithDescription sets the prompt text shown in the dashboard dialog
+        builder.AddParameter("discordWebhookUrl", secret: true)
+            .WithDescription(
+                "**Discord Webhook URL**\n\n" +
+                "Create a webhook in Discord: _Server Settings → Integrations → Webhooks → New Webhook_\n\n" +
+                "Format: `https://discord.com/api/webhooks/{id}/{token}`",
+                enableMarkdown: true);
 
-        // Add the notifier and configure it to watch everything
-        builder.AddDiscordNotifier("discord-alerts", webhookUrl)
+        builder.AddParameter("discordChannel")
+            .WithDescription(
+                "**Discord Channel Name**\n\n" +
+                "The channel name to display in notification messages (e.g. `aspire-demo`, `general`).",
+                enableMarkdown: true);
+
+        builder.AddDiscordNotifier("discord-alerts")
             .NotifyOnStartup()
             .NotifyOnShutdown()
             .WatchAllResources();
@@ -79,16 +90,25 @@ public static class AdvancedIntegrationsDemo
 /// Key Interfaces:
 /// - Resource: Base class for all Aspire resources
 /// - IResourceWithWaitSupport: Allows other resources to use WaitFor() on this
+/// 
+/// Parameter values (webhook URL, channel name) are read lazily from configuration
+/// so that dashboard-prompted values are available when events fire.
 /// </summary>
 public sealed class DiscordNotifierResource : Resource, IResourceWithWaitSupport
 {
+    private readonly IConfiguration _configuration;
+
     /// <summary>
-    /// The Discord webhook URL to post notifications to.
-    /// 
-    /// Webhook format: https://discord.com/api/webhooks/{id}/{token}
-    /// Create one in: Server Settings → Integrations → Webhooks
+    /// The Discord webhook URL, resolved from the "discordWebhookUrl" parameter.
+    /// Read lazily so dashboard-prompted values are available at event time.
     /// </summary>
-    public string WebhookUrl { get; }
+    public string WebhookUrl => _configuration["Parameters:discordWebhookUrl"] ?? "";
+
+    /// <summary>
+    /// The Discord channel name to display in notifications.
+    /// Resolved from the "discordChannel" parameter.
+    /// </summary>
+    public string ChannelName => _configuration["Parameters:discordChannel"] ?? "general";
 
     /// <summary>
     /// Track which resources we're actively watching.
@@ -100,10 +120,10 @@ public sealed class DiscordNotifierResource : Resource, IResourceWithWaitSupport
     /// Creates a new Discord notifier resource.
     /// </summary>
     /// <param name="name">The resource name (appears in Aspire dashboard)</param>
-    /// <param name="webhookUrl">Discord webhook URL</param>
-    public DiscordNotifierResource(string name, string webhookUrl) : base(name)
+    /// <param name="configuration">Configuration instance for lazy parameter resolution</param>
+    public DiscordNotifierResource(string name, IConfiguration configuration) : base(name)
     {
-        WebhookUrl = webhookUrl ?? throw new ArgumentNullException(nameof(webhookUrl));
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 }
 
@@ -135,29 +155,30 @@ public static class DiscordNotifierResourceBuilderExtensions
     /// Adds a Discord notifier to the application model.
     /// 
     /// This resource will post messages to a Discord channel when other
-    /// resources in the application change state.
+    /// resources in the application change state. The webhook URL and channel
+    /// name are read from Aspire parameters (dashboard prompts or user secrets).
     /// </summary>
     /// <param name="builder">The distributed application builder.</param>
     /// <param name="name">The name of the resource (e.g., "discord-alerts").</param>
-    /// <param name="webhookUrl">The Discord webhook URL to post to.</param>
     /// <returns>A resource builder for further configuration.</returns>
     /// <example>
     /// <code>
-    /// var discord = builder.AddDiscordNotifier("alerts", webhookUrl)
+    /// builder.AddParameter("discordWebhookUrl", secret: true);
+    /// builder.AddParameter("discordChannel");
+    /// 
+    /// var discord = builder.AddDiscordNotifier("alerts")
     ///     .NotifyOnStartup()
     ///     .WatchAllResources();
     /// </code>
     /// </example>
     public static IResourceBuilder<DiscordNotifierResource> AddDiscordNotifier(
         this IDistributedApplicationBuilder builder,
-        string name,
-        string webhookUrl)
+        string name)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentException.ThrowIfNullOrEmpty(name);
-        ArgumentException.ThrowIfNullOrEmpty(webhookUrl);
 
-        var resource = new DiscordNotifierResource(name, webhookUrl);
+        var resource = new DiscordNotifierResource(name, builder.Configuration);
 
         // AddResource is the core Aspire API for adding resources to the app model.
         // It wraps your resource in an IResourceBuilder<T> for further configuration.
@@ -190,7 +211,8 @@ public static class DiscordNotifierResourceBuilderExtensions
             await PostToDiscordAsync(
                 notifier.WebhookUrl,
                 title: "🚀 Aspire is starting up!",
-                description: $"Launching **{resourceCount}** resources...\n\n" +
+                description: $"Launching **{resourceCount}** resources...\n" +
+                            $"📢 Posting to **#{notifier.ChannelName}**\n\n" +
                             $"_CodeStock 2026 - Aspire All The Things!_",
                 color: DiscordColors.Blue,
                 ct);
@@ -276,7 +298,7 @@ public static class DiscordNotifierResourceBuilderExtensions
             // Post a summary of what we're watching
             await PostToDiscordAsync(
                 notifier.WebhookUrl,
-                title: "👀 Discord notifier is watching...",
+                title: $"👀 Watching resources → #{notifier.ChannelName}",
                 description: string.Join("\n", notifier.WatchedResourceNames.Select(n => $"• {n}")),
                 color: DiscordColors.Purple,
                 ct);

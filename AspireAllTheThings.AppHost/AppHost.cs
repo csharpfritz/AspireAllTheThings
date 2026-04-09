@@ -54,9 +54,11 @@ builder.AddAzureStorageDemo();    // Blobs, Queues, Tables with Azurite
 // builder.AddMailPitDemo();         // Community Toolkit integration
 
 // // ---- PART 5: Advanced Integration Patterns (5-AdvancedIntegrations.cs) ----
-// // Discord Notifier - Posts to Discord when resources change state
-// // Set "Discord:WebhookUrl" in user secrets to enable:
-// //   dotnet user-secrets set "Discord:WebhookUrl" "https://discord.com/api/webhooks/..."
+// // Discord Notifier with interactive parameter prompts
+// // The dashboard will prompt for webhook URL (secret) and channel name at startup.
+// // Or pre-fill via user secrets:
+// //   dotnet user-secrets set "Parameters:discordWebhookUrl" "https://discord.com/api/webhooks/..."
+// //   dotnet user-secrets set "Parameters:discordChannel" "aspire-demo"
 // builder.AddDiscordNotifierDemo();
 
 // // ---- PART 6: AI Integration (6-AI.cs) ----
