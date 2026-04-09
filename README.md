@@ -212,28 +212,40 @@ builder.AddProject<Projects.AspireAllTheThings_MailDemo>("maildemo")
 
 # Part 5: Advanced Integration Patterns
 
-Learn how to build CUSTOM Aspire integrations with proper eventing patterns.
+Learn how to build CUSTOM Aspire integrations with proper eventing patterns **and interactive parameter prompts**.
 
 > ⚠️ **Important Framing:** This is DEV-TIME tooling! The AppHost (and its eventing) doesn't run in production. In production, you'd use Azure Monitor, Prometheus, etc. But the patterns you learn here ARE production-relevant for database seeding, migrations, and integration testing.
 
 ## Demo: Discord Notifier 🔔
 
-A custom integration that posts to Discord whenever resources change state.
+A custom integration that posts to Discord whenever resources change state. This demo also showcases **Aspire's interactive parameter prompts** — the dashboard asks for configuration values at startup, with rich Markdown help text.
 
 ### Setup
 
 1. Create a Discord webhook: **Server Settings → Integrations → Webhooks → New Webhook**
-2. Store the URL in user secrets:
+2. **Option A** — Pre-fill via user secrets (no prompt at startup):
 
 ```bash
 cd AspireAllTheThings.AppHost
-dotnet user-secrets set "Discord:WebhookUrl" "https://discord.com/api/webhooks/YOUR_ID/YOUR_TOKEN"
+dotnet user-secrets set "Parameters:discordWebhookUrl" "https://discord.com/api/webhooks/YOUR_ID/YOUR_TOKEN"
+dotnet user-secrets set "Parameters:discordChannel" "aspire-demo"
 ```
+
+**Option B** — Leave unconfigured and enter values in the Aspire dashboard's interactive parameter prompt at startup (recommended for demos — it shows off the feature!).
 
 ### Usage
 
 ```csharp
-builder.AddDiscordNotifier("discord-alerts", webhookUrl)
+// Interactive parameter prompts with rich Markdown descriptions
+builder.AddParameter("discordWebhookUrl", secret: true)
+    .WithDescription("**Discord Webhook URL**\n\nFormat: `https://discord.com/api/webhooks/{id}/{token}`",
+        enableMarkdown: true);
+
+builder.AddParameter("discordChannel")
+    .WithDescription("**Discord Channel Name**\n\nThe channel name to display in notifications.",
+        enableMarkdown: true);
+
+builder.AddDiscordNotifier("discord-alerts")
     .NotifyOnStartup()      // 🚀 "Aspire is starting up!"
     .NotifyOnShutdown()     // 👋 "Aspire is shutting down!"
     .WatchAllResources();   // ✅ "cache is ready!" for each resource
@@ -244,6 +256,9 @@ builder.AddDiscordNotifier("discord-alerts", webhookUrl)
 | Concept | What It Shows |
 |---------|---------------|
 | **Custom Resource Type** | `DiscordNotifierResource` - non-container resource |
+| **AddParameter(secret: true)** | Dashboard prompts with a masked password field |
+| **AddParameter()** | Dashboard prompts with a standard text field |
+| **WithDescription(enableMarkdown: true)** | Rich Markdown help text rendered in the prompt dialog |
 | **BeforeStartEvent** | Global event before any resources start |
 | **ResourceReadyEvent** | Per-resource event when healthy |
 | **ResourceStoppedEvent** | Per-resource event when stopped |
@@ -254,11 +269,12 @@ builder.AddDiscordNotifier("discord-alerts", webhookUrl)
 
 | Step | What Happens | Discord Shows |
 |------|--------------|---------------|
-| 1 | Run `aspire run` | 🚀 "Aspire is starting up! Launching X resources..." |
-| 2 | Resources start | ✅ "**cache** is ready!" (for each) |
-| 3 | Stop Redis in dashboard | 🛑 "**cache** stopped!" |
-| 4 | Restart Redis | ✅ "**cache** is ready!" |
-| 5 | Ctrl+C | 👋 "Aspire is shutting down!" |
+| 1 | Run `dotnet run` | Dashboard shows parameter prompts (webhook URL + channel) |
+| 2 | Enter values and submit | 🚀 "Aspire is starting up! Launching X resources..." |
+| 3 | Resources start | ✅ "**cache** is ready!" (with channel name in messages) |
+| 4 | Stop Redis in dashboard | 🛑 "**cache** stopped!" |
+| 5 | Restart Redis | ✅ "**cache** is ready!" |
+| 6 | Ctrl+C | 👋 "Aspire is shutting down!" |
 
 ---
 
@@ -376,7 +392,7 @@ builder.AddItToolsDemo();
 builder.AddMailPitDemo();
 
 // ---- PART 5: Advanced Integration Patterns ----
-builder.AddDiscordNotifierDemo();  // Requires Discord:WebhookUrl in user secrets
+builder.AddDiscordNotifierDemo();  // Dashboard prompts for webhook URL + channel
 
 // ---- PART 6: AI Integration ----
 builder.AddGitHubModelDemo();  // Requires GitHub PAT with models:read
